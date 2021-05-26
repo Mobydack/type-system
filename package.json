@@ -1,6 +1,7 @@
 {
-  "name": "@mobydack/type-system",
+  "name": "@web-dev-memo/type-system",
   "version": "1.0.0",
+  "public": true,
   "description": "Definition simple type system",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
