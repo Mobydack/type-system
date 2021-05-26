@@ -1,9 +1,14 @@
 # Type system
 
+## Install
+```bash
+npm i --save @web-dev-memo/type-system
+```
+
 ## Usage
 
 ```ts
-import TypeSystem from "@mobydack/type-sytem";
+import TypeSystem from "@web-dev-memo/type-sytem";
 
 const typeSystem = new TypeSystem(
     {
