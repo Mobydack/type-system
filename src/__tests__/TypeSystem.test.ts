@@ -1,99 +1,115 @@
-import TypeSystem from "../TypeSystem";
+import TypeSystem from '../TypeSystem';
 
-describe("type-system", () => {
-    test("Type system was created", () => {
+describe('type-system', () => {
+    it('type system was created', () => {
+        expect.assertions(1);
+
         expect(() => new TypeSystem()).not.toThrow();
     });
 
-    test("Type is checked", () => {
+    it('type is checked', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem({
-            name: "A",
-            is: () => true
+            name: 'A',
+            is: () => true,
         });
 
-        expect(typeSystem.typeof("some value")).toBe("A");
+        expect(typeSystem.typeof('some value')).toBe('A');
     });
 
-    test("Created a subtype", () => {
+    it('created a subtype', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem(
             {
-                name: "String",
-                is: (value: unknown) => typeof value === "string"
+                name: 'String',
+                is: (value: unknown) => typeof value === 'string',
             },
             {
-                name: "ABBA",
-                is: (value: string) => value.toLowerCase() === "abba",
-                subFor: ["String"]
+                name: 'ABBA',
+                is: (value: string) => value.toLowerCase() === 'abba',
+                subFor: ['String'],
             }
         );
 
-        expect(typeSystem.typeof("AbBa")).toBe("ABBA");
+        expect(typeSystem.typeof('AbBa')).toBe('ABBA');
     });
 
-    test("Created deep subtype", () => {
+    it('created deep subtype', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem(
             {
-                name: "String",
-                is: (value: unknown) => typeof value === "string"
+                name: 'String',
+                is: (value: unknown) => typeof value === 'string',
             },
             {
-                name: "M",
+                name: 'M',
                 is: (value: string) => /marcus/gi.test(value),
-                subFor: ["String"]
+                subFor: ['String'],
             },
             {
-                name: "MA",
+                name: 'MA',
                 is: (value: string) =>
-                    value.toLowerCase() === "marcus aurelius",
-                subFor: ["M"]
+                    value.toLowerCase() === 'marcus aurelius',
+                subFor: ['M'],
             }
         );
 
-        expect(typeSystem.typeof("MarCus Aurelius")).toBe("MA");
+        expect(typeSystem.typeof('MarCus Aurelius')).toBe('MA');
     });
 
-    test("Subtypes for an undefined types isn't checked", () => {
+    it("subtypes for an undefined types isn't checked", () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem({
-            name: "ABBA",
-            is: (value: string) => value.toLowerCase() === "abba",
-            subFor: ["String"]
+            name: 'ABBA',
+            is: (value: string) => value.toLowerCase() === 'abba',
+            subFor: ['String'],
         });
 
-        expect(typeSystem.typeof("AbBa")).toBeUndefined();
+        expect(typeSystem.typeof('AbBa')).toBeUndefined();
     });
 
-    test("Cyclic types exit from recursion", () => {
+    it('cyclic types exit from recursion', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem(
             {
-                name: "String",
-                is: (value: unknown) => typeof value === "string"
+                name: 'String',
+                is: (value: unknown) => typeof value === 'string',
             },
             {
-                name: "M",
+                name: 'M',
                 is: (value: string) => /marcus/gi.test(value),
-                subFor: ["MA", "String"]
+                subFor: ['MA', 'String'],
             },
             {
-                name: "MA",
+                name: 'MA',
                 is: (value: string) =>
-                    value.toLowerCase() === "marcus aurelius",
-                subFor: ["M"]
+                    value.toLowerCase() === 'marcus aurelius',
+                subFor: ['M'],
             }
         );
 
-        expect(typeSystem.typeof("MarCus Aurelius")).toBe("MA");
+        expect(typeSystem.typeof('MarCus Aurelius')).toBe('MA');
     });
 
-    test("Empty type returned undefined value", () => {
+    it('is returned undefined when type system is empty', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem();
 
         expect(typeSystem.typeof(1)).toBeUndefined();
     });
 
-    test("Отсутствие типа возвращает undefined", () => {
+    it('is returned undefined when type is not found', () => {
+        expect.assertions(1);
+
         const typeSystem = new TypeSystem({
-            name: "A",
-            is: (value: unknown) => value === 1
+            name: 'A',
+            is: (value: unknown) => value === 1,
         });
 
         expect(typeSystem.typeof(2)).toBeUndefined();

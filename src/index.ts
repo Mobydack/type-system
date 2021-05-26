@@ -1,1 +1,1 @@
-export { default } from "./TypeSystem";
+export { default } from './TypeSystem';

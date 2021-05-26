@@ -1,1 +1,9 @@
 node_modules/
+*.log
+*.tgz
+.env
+.next
+.DS_Store
+dist/
+tsconfig.tsbuildinfo
+rollup.cache/

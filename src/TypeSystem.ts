@@ -1,4 +1,3 @@
-import { forEach, difference } from "lodash/fp";
 import { IType, ITypePresentation } from "./types";
 
 class TypeSystem {
@@ -9,13 +8,12 @@ class TypeSystem {
         is: () => false,
         sub: new Set<IType>()
     };
+
     private readonly types = new Map<IType["name"], IType>();
 
     constructor(...types: ITypePresentation[]) {
-        forEach<ITypePresentation>(
-            type => this.link(type.name, ...TypeSystem.getSubFor(type)),
-            forEach(type => this.defineType(type), types)
-        );
+        types.forEach(type => this.defineType(type));
+        types.forEach(type => this.link(type.name, ...TypeSystem.getSubFor(type)));
     }
 
     public typeof(value: unknown): IType["name"] | undefined {
@@ -39,7 +37,7 @@ class TypeSystem {
     private link(name: IType["name"], ...types: IType["name"][]): void {
         const typePresentation = this.types.get(name)!;
 
-        forEach(type => {
+        types.forEach(type => {
             if (type === TypeSystem.ROOT) {
                 this.root.sub.add(typePresentation);
 
@@ -51,7 +49,7 @@ class TypeSystem {
             if (parentType) {
                 parentType.sub.add(typePresentation);
             }
-        }, types);
+        });
     }
 
     private static getSubFor({ subFor }: ITypePresentation): string[] {
@@ -75,10 +73,7 @@ class TypeSystem {
 
         const sub = [...type.sub.values()];
 
-        for (const subTypeName of difference(
-            sub.map(({ name }) => name),
-            path
-        )) {
+        for (const subTypeName of sub.map(({ name }) => name).filter(name => !path.includes(name))) {
             const resultType = this.typeofRecursive(
                 value,
                 this.types.get(subTypeName)!,
