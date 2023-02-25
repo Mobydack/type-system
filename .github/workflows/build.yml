@@ -18,9 +18,11 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install dependencies
         run: npm ci
-      - name: Run type checking
+      - name: Lint code
+        run: npm run lint:ci
+      - name: Type checking
         run: npm run test:types
-      - name: Run unit tests
+      - name: Unit tests
         run: npm run test:unit:ci
   build:
     needs: tests
