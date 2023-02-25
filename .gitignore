@@ -1,9 +1,16 @@
+# Modules
 node_modules/
+
+# Artifacts
+.DS_Store
+rollup.cache/
+tsconfig.tsbuildinfo
 *.log
 *.tgz
-.env
-.next
-.DS_Store
+
+# Build
 dist/
-tsconfig.tsbuildinfo
-rollup.cache/
+
+# IDE
+.idea/
+.vscode/
