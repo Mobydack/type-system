@@ -8,6 +8,7 @@ on:
         branches:
             - master
             - $default_branch
+            - 7-deploy-add-semantic-release
 
 jobs:
     deploy:
@@ -23,6 +24,9 @@ jobs:
               run: npm ci
             - name: Build project
               run: npm run build
-            -
-
+            - name: Deploy project
+              env:
+                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: npx semantic-release
 
