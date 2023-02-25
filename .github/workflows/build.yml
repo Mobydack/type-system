@@ -7,18 +7,17 @@ on:
   pull_request:
 
 jobs:
-  lints:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout and prepare dependencies
-        uses: ./.github/workflows/install
-      - name: Lint code
-        run: npm run lint:ci
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout and prepare dependencies
-        uses: ./.github/workflows/install
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Using Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install dependencies
+        run: npm ci
       - name: Run type checking
         run: npm run test:types
       - name: Run unit tests
@@ -27,8 +26,15 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout and prepare dependencies
-        uses: ./.github/workflows/install
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Using Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install dependencies
+        run: npm ci
       - name: Build project
         run: npm run build
+
 
