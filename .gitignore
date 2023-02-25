@@ -1,6 +1,9 @@
 # Modules
 node_modules/
 
+# Reporters
+coverage/
+
 # Artifacts
 .DS_Store
 rollup.cache/
